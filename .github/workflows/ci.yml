@@ -50,4 +50,4 @@ jobs:
         run: pip install hatch
 
       - name: Run linting
-        run: hatch run lint:all
+        run: hatch run lint:check
