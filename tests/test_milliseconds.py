@@ -5,7 +5,6 @@ Run with: pytest tests/test_milliseconds.py
 Or with hatch: hatch run test
 """
 
-import pytest
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from milliseconds import (
