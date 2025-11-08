@@ -33,7 +33,6 @@ A lightweight, POSIX-compliant utility library for working with timestamps in mi
   - [Comparison](#comparison)
   - [Working with Negative Timestamps](#working-with-negative-timestamps)
 - [API Reference](#api-reference)
-- [Why Milliseconds?](#why-milliseconds)
 - [License](#license)
 
 ## Installation
