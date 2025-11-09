@@ -17,6 +17,7 @@ from zoneinfo import ZoneInfo
 
 from .constants import constants
 
+
 class milliseconds:
     """
     A utility class for working with POSIX timestamps in milliseconds.
@@ -516,7 +517,9 @@ class milliseconds:
             >>> milliseconds.is_same_second(1704110455900, 1704110456100)
             False
         """
-        return milliseconds.floor(ts1, constants.second) == milliseconds.floor(ts2, constants.second)
+        return milliseconds.floor(ts1, constants.second) == milliseconds.floor(
+            ts2, constants.second
+        )
 
     @staticmethod
     def is_same_minute(ts1: int, ts2: int) -> bool:
@@ -536,7 +539,9 @@ class milliseconds:
             >>> milliseconds.is_same_minute(1704110459000, 1704110460000)
             False
         """
-        return milliseconds.floor(ts1, constants.minute) == milliseconds.floor(ts2, constants.minute)
+        return milliseconds.floor(ts1, constants.minute) == milliseconds.floor(
+            ts2, constants.minute
+        )
 
     @staticmethod
     def is_same_hour(ts1: int, ts2: int) -> bool:
@@ -556,7 +561,9 @@ class milliseconds:
             >>> milliseconds.is_same_hour(1704113999000, 1704114000000)
             False
         """
-        return milliseconds.floor(ts1, constants.hour) == milliseconds.floor(ts2, constants.hour)
+        return milliseconds.floor(ts1, constants.hour) == milliseconds.floor(
+            ts2, constants.hour
+        )
 
     @staticmethod
     def is_same_day(ts1: int, ts2: int) -> bool:
@@ -579,4 +586,6 @@ class milliseconds:
             >>> milliseconds.is_same_day(1704153599000, 1704153600000)
             False
         """
-        return milliseconds.floor(ts1, constants.day) == milliseconds.floor(ts2, constants.day)
+        return milliseconds.floor(ts1, constants.day) == milliseconds.floor(
+            ts2, constants.day
+        )
