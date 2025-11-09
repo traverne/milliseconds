@@ -46,7 +46,7 @@ pip install milliseconds
 ```python
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from milliseconds import milliseconds, HOUR, DAY
+from milliseconds import milliseconds, constants
 
 # Convert datetime to milliseconds
 dt = datetime(2024, 1, 1, 12, 30, 45, tzinfo=ZoneInfo("UTC"))
@@ -58,7 +58,7 @@ dt_back = milliseconds.time(ms, ZoneInfo("UTC"))
 print(dt_back)  # 2024-01-01 12:30:45+00:00
 
 # Floor to nearest hour
-floored = milliseconds.floor(ms, HOUR)
+floored = milliseconds.floor(ms, constants.hour)
 print(milliseconds.time(floored, ZoneInfo("UTC")))  # 2024-01-01 12:00:00+00:00
 
 # Get next day boundary
@@ -88,20 +88,20 @@ print(dt_back)  # 2024-06-15 10:30:00-04:00 (EDT)
 ### Floor and Ceil Operations
 
 ```python
-from milliseconds import milliseconds, SECOND, MINUTE, HOUR, DAY
+from milliseconds import milliseconds, constants
 
 timestamp = 1704113445789  # 2024-01-01 12:30:45.789
 
 # Floor operations (round down)
-print(milliseconds.floor(timestamp, SECOND))  # 1704113445000 (12:30:45.000)
-print(milliseconds.floor(timestamp, MINUTE))  # 1704113400000 (12:30:00.000)
-print(milliseconds.floor(timestamp, HOUR))    # 1704110400000 (12:00:00.000)
-print(milliseconds.floor(timestamp, DAY))     # 1704067200000 (00:00:00.000)
+print(milliseconds.floor(timestamp, constants.second))  # 1704113445000 (12:30:45.000)
+print(milliseconds.floor(timestamp, constants.minute))  # 1704113400000 (12:30:00.000)
+print(milliseconds.floor(timestamp, constants.hour))    # 1704110400000 (12:00:00.000)
+print(milliseconds.floor(timestamp, constants.day))     # 1704067200000 (00:00:00.000)
 
 # Ceil operations (round up)
-print(milliseconds.ceil(timestamp, SECOND))   # 1704113446000 (12:30:46.000)
-print(milliseconds.ceil(timestamp, MINUTE))   # 1704113460000 (12:31:00.000)
-print(milliseconds.ceil(timestamp, HOUR))     # 1704114000000 (13:00:00.000)
+print(milliseconds.ceil(timestamp, constants.second))   # 1704113446000 (12:30:46.000)
+print(milliseconds.ceil(timestamp, constants.minute))   # 1704113460000 (12:31:00.000)
+print(milliseconds.ceil(timestamp, constants.hour))     # 1704114000000 (13:00:00.000)
 ```
 
 ### Boundary Navigation
@@ -210,10 +210,16 @@ print(milliseconds.time(earlier, ZoneInfo("UTC")))  # 1969-12-30 23:00:00
 
 ### Constants
 
-- `SECOND = 1_000` - Milliseconds in one second
-- `MINUTE = 60_000` - Milliseconds in one minute
-- `HOUR = 3_600_000` - Milliseconds in one hour
-- `DAY = 86_400_000` - Milliseconds in one day
+The `constants` IntEnum provides time unit values in milliseconds:
+
+```python
+from milliseconds import constants
+
+constants.second  # 1_000 - Milliseconds in one second
+constants.minute  # 60_000 - Milliseconds in one minute
+constants.hour    # 3_600_000 - Milliseconds in one hour
+constants.day     # 86_400_000 - Milliseconds in one day
+```
 
 ### Conversion Methods
 
@@ -222,8 +228,8 @@ print(milliseconds.time(earlier, ZoneInfo("UTC")))  # 1969-12-30 23:00:00
 
 ### Rounding Methods
 
-- `floor(milliseconds: int, factor: int = HOUR) -> int` - Round down to nearest factor
-- `ceil(milliseconds: int, factor: int = HOUR) -> int` - Round up to nearest factor
+- `floor(milliseconds: int, factor: int = constants.hour) -> int` - Round down to nearest factor
+- `ceil(milliseconds: int, factor: int = constants.hour) -> int` - Round up to nearest factor
 
 ### Boundary Navigation
 
