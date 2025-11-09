@@ -5,21 +5,17 @@ This module provides methods for converting between datetime objects and millise
 timestamps, as well as various time manipulation operations. All operations work with
 POSIX time (milliseconds since Unix epoch: 1970-01-01 00:00:00 UTC).
 
-Constants:
-    SECOND: Milliseconds in one second (1,000)
-    MINUTE: Milliseconds in one minute (60,000)
-    HOUR: Milliseconds in one hour (3,600,000)
-    DAY: Milliseconds in one day (86,400,000)
+Constants are imported from the constants module:
+    constants.second: Milliseconds in one second (1,000)
+    constants.minute: Milliseconds in one minute (60,000)
+    constants.hour: Milliseconds in one hour (3,600,000)
+    constants.day: Milliseconds in one day (86,400,000)
 """
 
 from datetime import datetime
 from zoneinfo import ZoneInfo
 
-SECOND: int = 1_000
-MINUTE: int = 60_000
-HOUR: int = 3_600_000
-DAY: int = 86_400_000
-
+from .constants import constants
 
 class milliseconds:
     """
@@ -67,7 +63,7 @@ class milliseconds:
         return datetime.fromtimestamp(milliseconds / 1000, timezone)
 
     @staticmethod
-    def floor(milliseconds: int, factor: int = HOUR) -> int:
+    def floor(milliseconds: int, factor: int = constants.hour) -> int:
         """
         Round down a timestamp to the nearest multiple of a time factor.
 
@@ -76,21 +72,21 @@ class milliseconds:
 
         Args:
             milliseconds: Timestamp in milliseconds
-            factor: Time unit to floor to (default: HOUR)
+            factor: Time unit to floor to (default: constants.hour)
 
         Returns:
             Floored timestamp in milliseconds
 
         Example:
-            >>> milliseconds.floor(1704110455000, DAY)  # 2024-01-01 12:00:55
+            >>> milliseconds.floor(1704110455000, constants.day)  # 2024-01-01 12:00:55
             1704067200000  # 2024-01-01 00:00:00
-            >>> milliseconds.floor(-50000, MINUTE)  # 1969-12-31 23:59:10
+            >>> milliseconds.floor(-50000, constants.minute)  # 1969-12-31 23:59:10
             -60000  # 1969-12-31 23:59:00
         """
         return (milliseconds // factor) * factor
 
     @staticmethod
-    def ceil(milliseconds: int, factor: int = HOUR) -> int:
+    def ceil(milliseconds: int, factor: int = constants.hour) -> int:
         """
         Round up a timestamp to the nearest multiple of a time factor.
 
@@ -99,15 +95,15 @@ class milliseconds:
 
         Args:
             milliseconds: Timestamp in milliseconds
-            factor: Time unit to ceil to (default: HOUR)
+            factor: Time unit to ceil to (default: constants.hour)
 
         Returns:
             Ceiled timestamp in milliseconds
 
         Example:
-            >>> milliseconds.ceil(1704110455000, HOUR)  # 2024-01-01 12:00:55
+            >>> milliseconds.ceil(1704110455000, constants.hour)  # 2024-01-01 12:00:55
             1704114000000  # 2024-01-01 13:00:00
-            >>> milliseconds.ceil(-50000, MINUTE)  # 1969-12-31 23:59:10
+            >>> milliseconds.ceil(-50000, constants.minute)  # 1969-12-31 23:59:10
             0  # 1970-01-01 00:00:00
         """
         # For positive: (ms + factor - 1) // factor * factor
@@ -139,7 +135,7 @@ class milliseconds:
             >>> milliseconds.last_second(0)  # 1970-01-01 00:00:00.000
             -1000  # 1969-12-31 23:59:59.000
         """
-        return milliseconds.floor(timestamp, SECOND) - SECOND
+        return milliseconds.floor(timestamp, constants.second) - constants.second
 
     @staticmethod
     def next_second(timestamp: int) -> int:
@@ -156,7 +152,7 @@ class milliseconds:
             >>> milliseconds.next_second(1704110455500)  # 12:00:55.500
             1704110456000  # 12:00:56.000
         """
-        return milliseconds.floor(timestamp, SECOND) + SECOND
+        return milliseconds.floor(timestamp, constants.second) + constants.second
 
     @staticmethod
     def last_minute(timestamp: int) -> int:
@@ -175,7 +171,7 @@ class milliseconds:
             >>> milliseconds.last_minute(30000)  # 1970-01-01 00:00:30
             -60000  # 1969-12-31 23:59:00
         """
-        return milliseconds.floor(timestamp, MINUTE) - MINUTE
+        return milliseconds.floor(timestamp, constants.minute) - constants.minute
 
     @staticmethod
     def next_minute(timestamp: int) -> int:
@@ -192,7 +188,7 @@ class milliseconds:
             >>> milliseconds.next_minute(1704110455000)  # 12:00:55
             1704110520000  # 12:01:00
         """
-        return milliseconds.floor(timestamp, MINUTE) + MINUTE
+        return milliseconds.floor(timestamp, constants.minute) + constants.minute
 
     @staticmethod
     def last_hour(timestamp: int) -> int:
@@ -211,7 +207,7 @@ class milliseconds:
             >>> milliseconds.last_hour(1800000)  # 1970-01-01 00:30:00
             -3600000  # 1969-12-31 23:00:00
         """
-        return milliseconds.floor(timestamp, HOUR) - HOUR
+        return milliseconds.floor(timestamp, constants.hour) - constants.hour
 
     @staticmethod
     def next_hour(timestamp: int) -> int:
@@ -228,7 +224,7 @@ class milliseconds:
             >>> milliseconds.next_hour(1704110455000)  # 12:00:55
             1704114000000  # 13:00:00
         """
-        return milliseconds.floor(timestamp, HOUR) + HOUR
+        return milliseconds.floor(timestamp, constants.hour) + constants.hour
 
     @staticmethod
     def last_day(timestamp: int) -> int:
@@ -250,7 +246,7 @@ class milliseconds:
             >>> milliseconds.last_day(43200000)  # 1970-01-01 12:00:00 UTC
             -86400000  # 1969-12-31 00:00:00 UTC
         """
-        return milliseconds.floor(timestamp, DAY) - DAY
+        return milliseconds.floor(timestamp, constants.day) - constants.day
 
     @staticmethod
     def next_day(timestamp: int) -> int:
@@ -270,7 +266,7 @@ class milliseconds:
             >>> milliseconds.next_day(1704110455000)  # 2024-01-01 12:00:55 UTC
             1704153600000  # 2024-01-02 00:00:00 UTC
         """
-        return milliseconds.floor(timestamp, DAY) + DAY
+        return milliseconds.floor(timestamp, constants.day) + constants.day
 
     @staticmethod
     def is_valid_second(timestamp: int) -> bool:
@@ -289,7 +285,7 @@ class milliseconds:
             >>> milliseconds.is_valid_second(1704110455500)
             False
         """
-        return timestamp % SECOND == 0
+        return timestamp % constants.second == 0
 
     @staticmethod
     def is_valid_minute(timestamp: int) -> bool:
@@ -308,7 +304,7 @@ class milliseconds:
             >>> milliseconds.is_valid_minute(1704110455000)
             False
         """
-        return timestamp % MINUTE == 0
+        return timestamp % constants.minute == 0
 
     @staticmethod
     def is_valid_hour(timestamp: int) -> bool:
@@ -327,7 +323,7 @@ class milliseconds:
             >>> milliseconds.is_valid_hour(1704110455000)
             False
         """
-        return timestamp % HOUR == 0
+        return timestamp % constants.hour == 0
 
     @staticmethod
     def is_valid_day(timestamp: int) -> bool:
@@ -346,7 +342,7 @@ class milliseconds:
             >>> milliseconds.is_valid_day(1704110455000)  # 2024-01-01 12:00:55 UTC
             False
         """
-        return timestamp % DAY == 0
+        return timestamp % constants.day == 0
 
     @staticmethod
     def increment_second(timestamp: int, n: float = 1) -> int:
@@ -366,7 +362,7 @@ class milliseconds:
             >>> milliseconds.increment_second(1704110455000, 0.5)
             1704110455500
         """
-        return timestamp + int(SECOND * n)
+        return timestamp + int(constants.second * n)
 
     @staticmethod
     def decrement_second(timestamp: int, n: float = 1) -> int:
@@ -386,7 +382,7 @@ class milliseconds:
             >>> milliseconds.decrement_second(500, 1)  # 1970-01-01 00:00:00.500
             -500  # 1969-12-31 23:59:59.500
         """
-        return timestamp - int(SECOND * n)
+        return timestamp - int(constants.second * n)
 
     @staticmethod
     def increment_minute(timestamp: int, n: float = 1) -> int:
@@ -404,7 +400,7 @@ class milliseconds:
             >>> milliseconds.increment_minute(1704110400000, 30)
             1704112200000
         """
-        return timestamp + int(MINUTE * n)
+        return timestamp + int(constants.minute * n)
 
     @staticmethod
     def decrement_minute(timestamp: int, n: float = 1) -> int:
@@ -424,7 +420,7 @@ class milliseconds:
             >>> milliseconds.decrement_minute(30000, 1)  # 1970-01-01 00:00:30
             -30000  # 1969-12-31 23:59:30
         """
-        return timestamp - int(MINUTE * n)
+        return timestamp - int(constants.minute * n)
 
     @staticmethod
     def increment_hour(timestamp: int, n: float = 1) -> int:
@@ -442,7 +438,7 @@ class milliseconds:
             >>> milliseconds.increment_hour(1704110400000, 2)
             1704117600000
         """
-        return timestamp + int(HOUR * n)
+        return timestamp + int(constants.hour * n)
 
     @staticmethod
     def decrement_hour(timestamp: int, n: float = 1) -> int:
@@ -462,7 +458,7 @@ class milliseconds:
             >>> milliseconds.decrement_hour(1800000, 1)  # 1970-01-01 00:30:00
             -1800000  # 1969-12-31 23:30:00
         """
-        return timestamp - int(HOUR * n)
+        return timestamp - int(constants.hour * n)
 
     @staticmethod
     def increment_day(timestamp: int, n: float = 1) -> int:
@@ -480,7 +476,7 @@ class milliseconds:
             >>> milliseconds.increment_day(1704067200000, 1)
             1704153600000
         """
-        return timestamp + int(DAY * n)
+        return timestamp + int(constants.day * n)
 
     @staticmethod
     def decrement_day(timestamp: int, n: float = 1) -> int:
@@ -500,7 +496,7 @@ class milliseconds:
             >>> milliseconds.decrement_day(43200000, 1)  # 1970-01-01 12:00:00
             -43200000  # 1969-12-31 12:00:00
         """
-        return timestamp - int(DAY * n)
+        return timestamp - int(constants.day * n)
 
     @staticmethod
     def is_same_second(ts1: int, ts2: int) -> bool:
@@ -520,7 +516,7 @@ class milliseconds:
             >>> milliseconds.is_same_second(1704110455900, 1704110456100)
             False
         """
-        return milliseconds.floor(ts1, SECOND) == milliseconds.floor(ts2, SECOND)
+        return milliseconds.floor(ts1, constants.second) == milliseconds.floor(ts2, constants.second)
 
     @staticmethod
     def is_same_minute(ts1: int, ts2: int) -> bool:
@@ -540,7 +536,7 @@ class milliseconds:
             >>> milliseconds.is_same_minute(1704110459000, 1704110460000)
             False
         """
-        return milliseconds.floor(ts1, MINUTE) == milliseconds.floor(ts2, MINUTE)
+        return milliseconds.floor(ts1, constants.minute) == milliseconds.floor(ts2, constants.minute)
 
     @staticmethod
     def is_same_hour(ts1: int, ts2: int) -> bool:
@@ -560,7 +556,7 @@ class milliseconds:
             >>> milliseconds.is_same_hour(1704113999000, 1704114000000)
             False
         """
-        return milliseconds.floor(ts1, HOUR) == milliseconds.floor(ts2, HOUR)
+        return milliseconds.floor(ts1, constants.hour) == milliseconds.floor(ts2, constants.hour)
 
     @staticmethod
     def is_same_day(ts1: int, ts2: int) -> bool:
@@ -583,4 +579,4 @@ class milliseconds:
             >>> milliseconds.is_same_day(1704153599000, 1704153600000)
             False
         """
-        return milliseconds.floor(ts1, DAY) == milliseconds.floor(ts2, DAY)
+        return milliseconds.floor(ts1, constants.day) == milliseconds.floor(ts2, constants.day)

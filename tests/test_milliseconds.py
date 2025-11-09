@@ -7,23 +7,18 @@ Or with hatch: hatch run test
 
 from datetime import datetime
 from zoneinfo import ZoneInfo
-from milliseconds import (
-    milliseconds,
-    SECOND,
-    MINUTE,
-    HOUR,
-    DAY,
-)
+
+from milliseconds import milliseconds, constants
 
 
 class TestConstants:
     """Test module constants."""
 
     def test_constants_values(self):
-        assert SECOND == 1_000
-        assert MINUTE == 60_000
-        assert HOUR == 3_600_000
-        assert DAY == 86_400_000
+        assert constants.second == 1_000
+        assert constants.minute == 60_000
+        assert constants.hour == 3_600_000
+        assert constants.day == 86_400_000
 
 
 class TestConversion:
@@ -72,42 +67,42 @@ class TestFloorCeil:
     def test_floor_to_hour(self):
         # 2024-01-01 12:34:56.789
         ms = 1704112496789
-        result = milliseconds.floor(ms, HOUR)
+        result = milliseconds.floor(ms, constants.hour)
         assert result == 1704110400000  # 2024-01-01 12:00:00
 
     def test_floor_to_day(self):
         ms = 1704112496789
-        result = milliseconds.floor(ms, DAY)
+        result = milliseconds.floor(ms, constants.day)
         assert result == 1704067200000  # 2024-01-01 00:00:00
 
     def test_floor_already_aligned(self):
         ms = 1704110400000  # Already at hour boundary
-        result = milliseconds.floor(ms, HOUR)
+        result = milliseconds.floor(ms, constants.hour)
         assert result == ms
 
     def test_floor_negative_timestamp(self):
         ms = -50000  # 1969-12-31 23:59:10
-        result = milliseconds.floor(ms, MINUTE)
+        result = milliseconds.floor(ms, constants.minute)
         assert result == -60000  # 1969-12-31 23:59:00
 
     def test_ceil_to_hour(self):
         ms = 1704110455000  # 2024-01-01 12:00:55
-        result = milliseconds.ceil(ms, HOUR)
+        result = milliseconds.ceil(ms, constants.hour)
         assert result == 1704114000000  # 2024-01-01 13:00:00
 
     def test_ceil_already_aligned(self):
         ms = 1704110400000  # Already at hour boundary
-        result = milliseconds.ceil(ms, HOUR)
+        result = milliseconds.ceil(ms, constants.hour)
         assert result == ms
 
     def test_ceil_negative_timestamp(self):
         ms = -50000  # 1969-12-31 23:59:10
-        result = milliseconds.ceil(ms, MINUTE)
+        result = milliseconds.ceil(ms, constants.minute)
         assert result == 0  # 1970-01-01 00:00:00
 
     def test_ceil_negative_aligned(self):
         ms = -60000  # 1969-12-31 23:59:00 (already aligned)
-        result = milliseconds.ceil(ms, MINUTE)
+        result = milliseconds.ceil(ms, constants.minute)
         assert result == -60000
 
 
@@ -323,21 +318,21 @@ class TestEdgeCases:
     """Test edge cases and boundary conditions."""
 
     def test_epoch_zero(self):
-        assert milliseconds.floor(0, HOUR) == 0
-        assert milliseconds.ceil(0, HOUR) == 0
+        assert milliseconds.floor(0, constants.hour) == 0
+        assert milliseconds.ceil(0, constants.hour) == 0
         assert milliseconds.is_valid_second(0) is True
 
     def test_very_large_timestamp(self):
         # Year 2100
         ms = 4102444800000
         result = milliseconds.increment_day(ms, 1)
-        assert result == ms + DAY
+        assert result == ms + constants.day
 
     def test_very_negative_timestamp(self):
         # Year 1900
         ms = -2208988800000
         result = milliseconds.decrement_day(ms, 1)
-        assert result == ms - DAY
+        assert result == ms - constants.day
 
     def test_timezone_conversion(self):
         ms = 1704110400000
@@ -354,4 +349,4 @@ class TestEdgeCases:
         assert result == 1704110401500
 
         result = milliseconds.decrement_hour(ms, 0.25)
-        assert result == ms - (HOUR // 4)
+        assert result == ms - (constants.hour // 4)

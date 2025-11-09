@@ -1,3 +1,4 @@
-from .milliseconds import milliseconds, SECOND, MINUTE, HOUR, DAY
+from .milliseconds import milliseconds
+from .constants    import constants
 
-__all__ = ["milliseconds", "SECOND", "MINUTE", "HOUR", "DAY"]
+__all__ = ["milliseconds", "constants"]
